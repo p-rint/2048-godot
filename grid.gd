@@ -5,12 +5,15 @@ extends Node2D
 
 var grid  = [[0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]]
 
+@onready var Tiles: Node2D = $Tiles
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
 	randomNumbers()
 	
 	printGrid()
+	updateGrid()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -18,26 +21,37 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("Up"):
 		moveUp()
-		printGrid()
+		updateGrid()
 	
 	if Input.is_action_just_pressed("Down"):
 		moveDown()
-		printGrid()
+		updateGrid()
 	
 	if Input.is_action_just_pressed("Left"):
 		moveLeft()
-		printGrid()
+		updateGrid()
 		
 	if Input.is_action_just_pressed("Right"):
 		moveRight()
-		printGrid()
+		updateGrid()
 	
 
 func printGrid():
 	print()
 	for i in grid:
 		print(i)
+
+func updateGrid():
+	var i = 0
+	for node2d : Node2D in Tiles.get_children():
 		
+		var j = 0
+		for tile : ColorRect in node2d.get_children():
+		
+			var label : Label = tile.get_child(0)
+			label.text = str(grid[i][j])
+			j += 1
+		i += 1
 
 func randomNumbers():
 	var count = 2
@@ -66,14 +80,14 @@ func moveUp():
 					else: 
 						break
 				
-				#if moves > 0 : #if you moved 
-					#grid[i - moves][j] = grid[i][j]
-					#grid[i][j] = 0
-					#print(moves)
-				if i - (moves + 1) > 0:
-					if grid[i - (moves + 1)][j] = grid[i][j]:
-						
-					
+				if moves > 0 : #if you moved 
+					grid[i - moves][j] = grid[i][j]
+					grid[i][j] = 0
+					print(moves)
+				
+				if grid[i - (moves + 1)][j] == grid[i - moves][j]:
+					grid[i - (moves + 1)][j] = grid[i - moves][j] * 2
+					grid[i - moves][j] = 0
 				
 	randomNumbers()
 
@@ -95,6 +109,12 @@ func moveDown():
 					grid[i + moves][j] = grid[i][j]
 					grid[i][j] = 0
 					print(moves)
+				
+				if i + (moves + 1) < 4:
+					if grid[i + (moves + 1)][j] == grid[i + moves][j]:
+						grid[i + (moves + 1)][j] = grid[i + moves][j] * 2
+						grid[i + moves][j] = 0
+				
 	randomNumbers()
 
 func moveLeft():
@@ -114,6 +134,11 @@ func moveLeft():
 					grid[i][j - moves] = grid[i][j]
 					grid[i][j] = 0
 					print(moves)
+				
+				if grid[i][j - (moves + 1)] == grid[i][j - moves]:
+							grid[i][j - (moves + 1)] = grid[i][j - moves] * 2
+							grid[i][j - moves] = 0
+				
 	randomNumbers()
 
 func moveRight():
@@ -134,4 +159,9 @@ func moveRight():
 					grid[i][j + moves] = grid[i][j]
 					grid[i][j] = 0
 					print(moves)
+				
+				if j + (moves + 1) < 4:
+					if grid[i][j + (moves + 1)] == grid[i][j + moves]:
+							grid[i][j + (moves + 1)] = grid[i][j + moves] * 2
+							grid[i][j + moves] = 0
 	randomNumbers()
