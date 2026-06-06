@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5fyru1f04v8"]
+
+[ext_resource type="Script" uid="uid://c44p1ysnr0rk6" path="res://grid.gd" id="1_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://so38828xu1tl" path="res://icon.svg" id="2_0xm2m"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Grid" type="Node2D" parent="."]
+script = ExtResource("1_0xm2m")
+width = 10
+height = 10
+
+[node name="Background" type="Node2D" parent="Grid"]
+
+[node name="ColorRect" type="ColorRect" parent="Grid/Background"]
+offset_right = 512.0
+offset_bottom = 512.0
+
+[node name="Tiles" type="Node2D" parent="Grid"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Grid/Tiles"]
+texture = ExtResource("2_0xm2m")
+centered = false
